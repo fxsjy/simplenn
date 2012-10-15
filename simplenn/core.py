@@ -18,17 +18,17 @@ class NN():
 		self.inputs_keys.append("~") #bias node
 		self.outputs_keys = outputs_keys
 		for ip in inputs_keys:
-			self.weight_matix[ip] = dict([(op,-2.0+random.random()*4) for op in outputs_keys])
+			self.weight_matix[ip] = dict([(op,-2.0+random.random()*4.0) for op in outputs_keys])
 			self.lastchange[ip] = dict([(op,0) for op in outputs_keys])
 
 	def train_onece(self, X,Y,sm,eta=0.01,beta=0.001):
 		X['~']=1.0
-		if sm : #sigmoid or not
+		if sm :
 			Y_ = dict([ (k, sigmoid(sum([ X[i]* self.weight_matix[i][k] for i in X.keys() ])) ) for k in Y.keys() ] )
 			error = dict([(k,Y_[k]-v) for k,v in Y.iteritems()])
 			for k1 in X:
 				for k2 in Y:
-					change = error[k2]*X[k1]
+					change = dsigmoid(Y_[k2])* error[k2]*X[k1]
 					self.weight_matix[k1][k2] -= (change*eta+ self.lastchange[k1][k2]*beta)
 					self.lastchange[k1][k2] = change
 		else:
@@ -101,3 +101,4 @@ class RBFNN():
 			d[j] = self.make_rbf(X,c)
 		Y_ = self.nn.test_onece(d,sm)
 		return Y_
+
