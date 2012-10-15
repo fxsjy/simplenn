@@ -31,7 +31,8 @@ def demo_digit():
     ]
 
     targets = [R(0),R(6),R(0),R(4),R(0),R(0),R(2),R(1),R(4),R(0),R(3),R(5),R(3),R(1),R(4),R(2)]
-    # create a network with two input, two hidden, and one output nodes
+    
+    # create a network with 10 input, one output nodes
     n = simplenn.NN(range(10), ['output'])
     # train it with some patterns
     for i in xrange(1000):
